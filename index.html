@@ -17,16 +17,16 @@
 
 
   </head>
-  <body class="">
+  <body class="mdui-container-fluid mdui-typo mdui-appbar-with-toolbar mdui-drawer-body-left">
     <div
       id="app"
-      class="mdui-container-fluid mdui-typo mdui-appbar-with-toolbar mdui-drawer-body-left"
+      class=""
     >
       <header class="">
         <div class="mdui-appbar mdui-appbar-fixed">
           <div class="mdui-toolbar mdui-color-indigo">
             <a
-              @click="drawerToggle"
+             mdui-drawer="{target: '#main-drawer', swipe: true}"
               href="javascript:;"
               class="mdui-btn mdui-btn-icon"
               ><i class="mdui-icon material-icons">menu</i></a
@@ -49,7 +49,7 @@
         </div>
       </header>
       <!-- 默认抽屉栏在左侧 -->
-      <div class="mdui-drawer mdui-drawer-open" id="drawer">
+      <div class="mdui-drawer mdui-drawer-open" id="main-drawer">
         <div style="padding: 10px">
           由:
           <div>
@@ -103,6 +103,9 @@
         integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+"
         crossorigin="anonymous"
       ></script>
+      <script>
+        var $$ = mdui.JQ;
+      </script>
     <script>
       function getData() {
         return fetch(
@@ -116,7 +119,6 @@
       }
 
       let clipboard_;
-      var inst = new mdui.Drawer("#drawer");
       const vm = new Vue({
         el: "#app",
         data() {
@@ -144,9 +146,7 @@
           });
         },
         methods: {
-          drawerToggle() {
-            inst.toggle();
-          },
+
           makeRssUrl({ bizid = "" }) {
             return `https://github.com/hellodword/wechat-feeds/raw/feeds/${bizid}.xml`;
           },
