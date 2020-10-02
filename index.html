@@ -17,7 +17,7 @@
 
 
   </head>
-  <body class="mdui-container-fluid mdui-typo mdui-appbar-with-toolbar mdui-drawer-body-left">
+  <body class="mdui-container-fluid mdui-typo mdui-appbar-with-toolbar">
     <div
       id="app"
       class=""
@@ -25,12 +25,12 @@
       <header class="">
         <div class="mdui-appbar mdui-appbar-fixed">
           <div class="mdui-toolbar mdui-color-indigo">
-            <a
+            <!-- <a
              mdui-drawer="{target: '#main-drawer', swipe: true}"
               href="javascript:;"
               class="mdui-btn mdui-btn-icon"
               ><i class="mdui-icon material-icons">menu</i></a
-            >
+            > -->
             <a href="javascript:;" class="mdui-typo-headline">微信公众号RSS</a>
             <div class="mdui-toolbar-spacer"></div>
             <!-- <a href="javascript:;" class="mdui-btn mdui-btn-icon"
@@ -49,17 +49,9 @@
         </div>
       </header>
       <!-- 默认抽屉栏在左侧 -->
-      <div class="mdui-drawer mdui-drawer-open" id="main-drawer">
-        <div style="padding: 10px">
-          由:
-          <div>
-            <a href="https://github.com/hellodword/wechat-feeds"
-              >hellodword/wechat-feeds</a
-            >
-          </div>
-          提供支持
-        </div>
-      </div>
+      <!-- <div class="mdui-drawer mdui-drawer-open" id="main-drawer">
+        
+      </div> -->
 
       <div v-if="isloading">
         <div class="mdui-progress">
@@ -68,7 +60,17 @@
         loading...
       </div>
       <div v-else class="">
+
+        <div style="padding: 10px">
+          由:
+            <a href="https://github.com/hellodword/wechat-feeds"
+              >hellodword/wechat-feeds</a
+            >
+          提供支持
+        </div>
         <div class="mdui-divider"></div>
+
+
 
         <div class="list mdui-list">
           <block v-for="(item,i) in list" :key="i">
