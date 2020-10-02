@@ -28,9 +28,7 @@ header{
     height: 1px;
     background-color: #e8e8e8;
 }
-.list .item{
-    padding:10px 30px;
-}
+
 .list .item .col{
     flex: 1;
     margin: 0 20px;
