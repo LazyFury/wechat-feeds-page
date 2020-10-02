@@ -15,46 +15,64 @@
       crossorigin="anonymous"
     />
 
-    <!-- MDUI JavaScript -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
-      integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+"
-      crossorigin="anonymous"
-    ></script>
+
   </head>
-  <body class='mdui-appbar-with-toolbar'>
-    <div id="app" class="mdui-container-fluid mdui-typo">
-      <div v-if="isloading">loading...</div>
-      <div v-else>
-        <header class="">
-          <div class="mdui-appbar mdui-appbar-fixed">
-            <div class="mdui-toolbar mdui-color-indigo">
-              <a href="javascript:;" class="mdui-typo-headline">微信公众号RSS</a>
-              <div class="mdui-toolbar-spacer"></div>
-              <a href="javascript:;" class="mdui-btn mdui-btn-icon"
-                ><i class="mdui-icon material-icons">search</i></a
-              >
-              <a href="javascript:;" class="mdui-btn mdui-btn-icon" @click="refresh"
-                ><i class="mdui-icon material-icons">refresh</i></a
-              >
-              <a href="javascript:;" class="mdui-btn mdui-btn-icon"
-                ><i class="mdui-icon material-icons">more_vert</i></a
-              >
-            </div>
+  <body class="">
+    <div
+      id="app"
+      class="mdui-container-fluid mdui-typo mdui-appbar-with-toolbar mdui-drawer-body-left"
+    >
+      <header class="">
+        <div class="mdui-appbar mdui-appbar-fixed">
+          <div class="mdui-toolbar mdui-color-indigo">
+            <a
+              @click="drawerToggle"
+              href="javascript:;"
+              class="mdui-btn mdui-btn-icon"
+              ><i class="mdui-icon material-icons">menu</i></a
+            >
+            <a href="javascript:;" class="mdui-typo-headline">微信公众号RSS</a>
+            <div class="mdui-toolbar-spacer"></div>
+            <!-- <a href="javascript:;" class="mdui-btn mdui-btn-icon"
+              ><i class="mdui-icon material-icons">search</i></a
+            > -->
+            <a
+              href="javascript:;"
+              class="mdui-btn mdui-btn-icon"
+              @click="refresh"
+              ><i class="mdui-icon material-icons">refresh</i></a
+            >
+            <!-- <a href="javascript:;" class="mdui-btn mdui-btn-icon"
+              ><i class="mdui-icon material-icons">more_vert</i></a
+            > -->
           </div>
+        </div>
+      </header>
+      <!-- 默认抽屉栏在左侧 -->
+      <div class="mdui-drawer mdui-drawer-open" id="drawer">
+        <div style="padding: 10px">
+          由:
           <div>
-            由:
             <a href="https://github.com/hellodword/wechat-feeds"
               >hellodword/wechat-feeds</a
             >
-            提供支持
           </div>
-        </header>
+          提供支持
+        </div>
+      </div>
 
-        <hr />
+      <div v-if="isloading">
+        <div class="mdui-progress">
+          <div class="mdui-progress-indeterminate"></div>
+        </div>
+        loading...
+      </div>
+      <div v-else class="">
+        <div class="mdui-divider"></div>
+
         <div class="list mdui-list">
           <block v-for="(item,i) in list" :key="i">
-            <div class="item row mdui-list-item mdui-ripple" >
+            <div class="item row mdui-list-item mdui-ripple">
               <div class="actions row">
                 <button
                   href="javascript:;"
@@ -64,28 +82,28 @@
                   <i class="mdui-icon material-icons">&#xe14d;</i>
                   <span style="display: inline-block">复制链接</span>
                 </button>
-
               </div>
               <div class="col mdui-col">
                 <div class="title">
-                  <h3 >{{i}}. {{item.name}}</h3>
+                  <h3>{{i}}. {{item.name}}</h3>
                 </div>
                 <small class="desc mdui-list-item-two-line"
                   >{{item.description}}</small
                 >
               </div>
-
             </div>
-            <div class="partation"></div>
-
-           
+            <div class="mdui-divider"></div>
           </block>
         </div>
       </div>
     </div>
+        <!-- MDUI JavaScript -->
+        <script
+        src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
+        integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+"
+        crossorigin="anonymous"
+      ></script>
     <script>
-      
-      // 请求数据
       function getData() {
         return fetch(
           "https://raw.githubusercontent.com/Treblex/wechat-feeds-page/master/cli/static/temp.json",
@@ -98,7 +116,7 @@
       }
 
       let clipboard_;
-
+      var inst = new mdui.Drawer("#drawer");
       const vm = new Vue({
         el: "#app",
         data() {
@@ -126,11 +144,14 @@
           });
         },
         methods: {
+          drawerToggle() {
+            inst.toggle();
+          },
           makeRssUrl({ bizid = "" }) {
             return `https://github.com/hellodword/wechat-feeds/raw/feeds/${bizid}.xml`;
           },
-          refresh(){
-            location.reload()
+          refresh() {
+            location.reload();
           },
           copy(text) {
             let button = document.createElement("button");
