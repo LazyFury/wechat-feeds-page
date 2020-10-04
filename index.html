@@ -14,14 +14,9 @@
       integrity="sha384-2PJ2u4NYg6jCNNpv3i1hK9AoAqODy6CdiC+gYiL2DVx+ku5wzJMFNdE3RoWfBIRP"
       crossorigin="anonymous"
     />
-
-
   </head>
   <body class="mdui-container-fluid mdui-typo mdui-appbar-with-toolbar">
-    <div
-      id="app"
-      class=""
-    >
+    <div id="app" class="">
       <header class="">
         <div class="mdui-appbar mdui-appbar-fixed">
           <div class="mdui-toolbar mdui-color-indigo">
@@ -60,20 +55,29 @@
         loading...
       </div>
       <div v-else class="">
-
         <div style="padding: 10px">
           由:
-            <a href="https://github.com/hellodword/wechat-feeds"
-              >hellodword/wechat-feeds</a
-            >
-          提供支持
+          <a href="https://github.com/hellodword/wechat-feeds"
+            >hellodword/wechat-feeds</a
+          >
+          提供支持 <br>
+          搜索结果共：{{key?searchResults.length:list.length}}
         </div>
         <div class="mdui-divider"></div>
 
 
+        <div style="padding: 10px 0">
+          <div class="mdui-textfield mdui-textfield-expandable mdui-textfield-expanded">
+            <button class="mdui-textfield-icon mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></button>
+            <input class="mdui-textfield-input" type="text" placeholder="Search" v-model="key" @input="search()"  />
+            <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">close</i></button>
+          </div>
+        </div>
+
+        <div class="mdui-divider"></div>
 
         <div class="list mdui-list">
-          <block v-for="(item,i) in list" :key="i">
+          <block v-for="(item,i) in (key?searchResults:list)" :key="i">
             <div class="item row mdui-list-item mdui-ripple">
               <div class="actions row">
                 <button
@@ -99,15 +103,15 @@
         </div>
       </div>
     </div>
-        <!-- MDUI JavaScript -->
-        <script
-        src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
-        integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+"
-        crossorigin="anonymous"
-      ></script>
-      <script>
-        var $$ = mdui.JQ;
-      </script>
+    <!-- MDUI JavaScript -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
+      integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      var $$ = mdui.JQ;
+    </script>
     <script>
       function getData() {
         return fetch(
@@ -120,6 +124,18 @@
           });
       }
 
+      // 防抖
+      function debounce(fn, delay = 500) {
+        let timer = null;
+        return function (...args) {
+          let that = this;
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            fn.call(that, ...args);
+          }, delay);
+        };
+      }
+
       let clipboard_;
       const vm = new Vue({
         el: "#app",
@@ -127,8 +143,14 @@
           return {
             isloading: true,
             list: [{}, {}, {}],
+            key: "",
+            searchResults: [],
+            search: debounce(() => {
+              this.searchResults = this.selectMatchItems(this.list, this.key);
+            }),
           };
         },
+
         created() {
           console.log("created");
 
@@ -148,7 +170,11 @@
           });
         },
         methods: {
-
+          selectMatchItems(list, key) {
+            return list.filter(item => {
+              return (item['name']||'').indexOf(key)>-1||(item['desc']||'').indexOf(key)>-1
+            });
+          },
           makeRssUrl({ bizid = "" }) {
             return `https://github.com/hellodword/wechat-feeds/raw/feeds/${bizid}.xml`;
           },
