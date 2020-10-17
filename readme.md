@@ -1,3 +1,5 @@
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Treblex/wechat-feeds-page)
+
 
 ## 原项目已支持，预览地址：[//wechat.privacyhide.com/](//wechat.privacyhide.com/)
 
